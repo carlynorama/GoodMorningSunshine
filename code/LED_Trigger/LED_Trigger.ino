@@ -1,5 +1,5 @@
 bool newReceivedMessageFlag = false;
-bool newSentMessageFlag = false; 
+bool newSentMessageFlag = false;
 
 //INFORMATION ABOUT THE SUN
 int currentColor = 0;
@@ -23,29 +23,32 @@ void setup() {
   pinMode(sendMessagePin, INPUT);
   pinMode(sentStatusPin, OUTPUT);
 
+
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   newReceivedMessageFlag = !digitalRead(receiveMessagePin);
   newSentMessageFlag = !digitalRead(receiveMessagePin);
-  
-  if(newReceivedMessageFlag) {
-     currentColor = 0;
-     sunState = 1;
+
+  if (newReceivedMessageFlag) {
+    currentColor = 0;
+    sunState = 1;
   }
-  
-  if(newSentMessageFlag) {
-     currentColor = 0;
-     if (sunState > 0) {
-       sunState = 3;
-     }
+
+  if (newSentMessageFlag) {
+    currentColor = 0;
+    if (sunState > 0) {
+      sunState = 3;
+    }
   }
-  
-  
+
+
   if (sunState == 1) {
     sunRise();
   } else if (sunState == 3) {
     sunSet();
+  } else if (sunState == 0) {
+    nightyNight();
   }
 }
