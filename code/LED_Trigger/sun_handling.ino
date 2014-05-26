@@ -37,6 +37,7 @@ void MaxM_forSetUpLoop() {
   blinkm.begin();
   blinkm.stopScript();  // turn off startup script
   blinkm.setFadeSpeed(fadeTimeTicks);
+  nightyNight();
   Serial.println("done setting up");
 }
 
@@ -88,3 +89,6 @@ void sunSet() {
   }
 }
 
+void nightyNight() {
+   blinkm.fadeToRGB(0, 0, 0);
+}
