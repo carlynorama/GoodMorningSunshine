@@ -48,19 +48,37 @@ void MaxM_forSetUpLoop() {
   blinkm.stopScript();  // turn off startup script
   blinkm.setFadeSpeed(fadeTimeTicks);
   nightyNight();
-  Console.println("done setting up");
+  if (debugFlag) {
+    Console.println("done setting up");
+  }
 }
 
 void initializeSunrise() {
   currentColor = 0;
   sunState = 1;
+  if (debugFlag) {
+    Console.println("sunRise");
+  }
 }
 
 void initializeSunset() {
-  currentColor = 0;
   if (sunState > 0) {
     sunState = 3;
+    currentColor = 0;
+    if (debugFlag) {
+      Console.println("sunSet");
+    }
+  } else {
+    if (debugFlag) {
+      Console.println("already off");
+    }
   }
+
+}
+
+void nightyNight() {
+  blinkm.fadeToRGB(0, 0, 0);
+  sunState = 0;
 }
 
 void updateSun() {
@@ -90,11 +108,16 @@ void sunRise() {
       blinkm.fadeToRGB(r, g, b);
 
       currentColor = newColor + 1;
-      Console.print("Changed to color: ");
-      Console.println(newColor);
+      if (debugFlag) {
+        Console.print("Changed to color: ");
+        Console.println(newColor);
+      }
     }
   } else if (currentColor >= num_colors_sunrise) {
     sunState = 2;
+    if (debugFlag) {
+        Console.print("Sunrise Complete");
+    }
   }
 }
 
@@ -114,14 +137,14 @@ void sunSet() {
       blinkm.fadeToRGB(r, g, b);
 
       currentColor = newColor + 1;
-      Console.print("Changed to color: ");
-      Console.println(newColor);
+      if (debugFlag) {
+        Console.print("Changed to color: ");
+        Console.println(newColor);
+      }
     }
   }  else if (currentColor >= num_colors_sunrise) {
     sunState = 0;
   }
 }
 
-void nightyNight() {
-  blinkm.fadeToRGB(0, 0, 0);
-}
+
