@@ -3,6 +3,14 @@
 
 int unsigned long previousColorChangeTime = 0;
 
+//INFORMATION ABOUT THE SUN
+int currentColor = 0;
+int newColor = 0;
+byte sunState = 0;
+// 0 = off
+// 1 = rising
+// 2 = risen
+// 3 = setting
 
 int blinkm_addr = 0;  // 0 = broadcast, talk to all blinkms
 BlinkM blinkm = BlinkM(blinkm_addr);
@@ -32,6 +40,8 @@ byte sunset_color_list_rgb[][3] = {
 
 const int unsigned long sunrise_change_time_each =  sunrise_change_time / num_colors_sunrise;
 
+
+
 void MaxM_forSetUpLoop() {
   blinkm.powerUp();
   blinkm.begin();
@@ -40,6 +50,29 @@ void MaxM_forSetUpLoop() {
   nightyNight();
   Serial.println("done setting up");
 }
+
+void initializeSunrise() {
+    currentColor = 0;
+    sunState = 1;
+}
+
+void initializeSunset() {
+    currentColor = 0;
+    if (sunState > 0) {
+      sunState = 3;
+    }
+}
+
+void updateSun() {
+    if (sunState == 1) {
+    sunRise();
+  } else if (sunState == 3) {
+    sunSet();
+  } else if (sunState == 0) {
+    nightyNight();
+  }
+}
+
 
 void sunRise() {
   //every sunrise_change_time/num_colors_sunrise millis send a new

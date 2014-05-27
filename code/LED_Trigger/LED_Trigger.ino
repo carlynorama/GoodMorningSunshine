@@ -1,14 +1,7 @@
 bool newReceivedMessageFlag = false;
 bool newSentMessageFlag = false;
 
-//INFORMATION ABOUT THE SUN
-int currentColor = 0;
-int newColor = 0;
-byte sunState = 0;
-// 0 = off
-// 1 = rising
-// 2 = risen
-// 3 = setting
+
 
 
 //FOR TESTING RECIEVED MESSAGES
@@ -32,23 +25,13 @@ void loop() {
   newSentMessageFlag = !digitalRead(receiveMessagePin);
 
   if (newReceivedMessageFlag) {
-    currentColor = 0;
-    sunState = 1;
+    initializeSunrise();
   }
 
   if (newSentMessageFlag) {
-    currentColor = 0;
-    if (sunState > 0) {
-      sunState = 3;
-    }
+    initializeSunset();
   }
 
+ updateSun();
 
-  if (sunState == 1) {
-    sunRise();
-  } else if (sunState == 3) {
-    sunSet();
-  } else if (sunState == 0) {
-    nightyNight();
-  }
 }
