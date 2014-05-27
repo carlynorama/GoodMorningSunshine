@@ -16,6 +16,7 @@ int blinkm_addr = 0;  // 0 = broadcast, talk to all blinkms
 BlinkM blinkm = BlinkM(blinkm_addr);
 
 const int unsigned long sunrise_change_time = 60000;
+const int unsigned long sunset_change_time = 60000;
 int fadeTimeTicks = 1;  // 1 is slow 255 is fast
 
 
@@ -39,6 +40,7 @@ byte sunset_color_list_rgb[][3] = {
 };
 
 const int unsigned long sunrise_change_time_each =  sunrise_change_time / num_colors_sunrise;
+const int unsigned long sunset_change_time_each =  sunset_change_time / num_colors_sunset;
 
 
 
@@ -126,7 +128,7 @@ void sunSet() {
   //color to the blinkM with a fade command.
   if (currentColor < num_colors_sunset) {
     sunState = 3;
-    if (millis() - previousColorChangeTime >= sunrise_change_time_each) {
+    if (millis() - previousColorChangeTime >= sunset_change_time_each) {
       previousColorChangeTime = millis();
       newColor = currentColor;
 
@@ -142,9 +144,11 @@ void sunSet() {
         Console.println(newColor);
       }
     }
-  }  else if (currentColor >= num_colors_sunrise) {
+  }  else if (currentColor >= num_colors_sunset) {
     sunState = 0;
+    
   }
 }
+
 
 
