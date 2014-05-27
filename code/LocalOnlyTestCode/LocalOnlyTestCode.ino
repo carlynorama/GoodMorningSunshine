@@ -8,7 +8,7 @@ bool newReceivedMessageFlag = false;
 bool newSentMessageFlag = false;
 
 byte outMessageStatusState = 0;
-// 0 = off, 1 = trying to reach internet,  2 = sent message
+// 0 = no pending message, 1 = trying to reach internet,  2 = found internet
 
 //IO
 Button sendButton = Button(11, LOW);
@@ -38,11 +38,11 @@ void loop() {
   checkForMessages();
   
   sendButton.listen();  
-  if (sendButton.onRelease()){
+  if (sendButton.onPress()){
     newSentMessageFlag = true;
     outMessageStatusState = 1;
+    sendMessage();
     setStatusLED(outMessageStatusState);
-    
   }
   
 
