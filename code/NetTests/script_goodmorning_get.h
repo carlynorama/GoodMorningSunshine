@@ -15,12 +15,11 @@ boolean checkScriptExists_goodmorning_get() {
 // upload the script 
 void uploadScript_goodmorning_get() { 
   File f = FileSystem.open( goodmorning_get_path, FILE_WRITE); 
-  f.print(F( "#!/usr/bin/env python\n" ));
+  f.print(F( "#!/usr/bin/python\n" ));
   f.print(F( "# goodmorning_get.py\n" ));
   f.print(F( "import os,sys\n" ));
   f.print(F( "# add your curl url here, can be ftp, http (if server supports PUT), etc.\n" ));
   f.print(F( "# ftp format:   'ftp://username:password@hostname/dirpath'\n" ));
-  f.print(F( "#ftp_base_url = 'ftp://crashjook:xYSMAE4w@crash.jook.com/goodmorning'\n" ));
   f.print(F( "ftp_base_url = 'ftp://jooktest:Mk9MZu6G@test.jook.com/goodmorning'\n" ));
   f.print(F( "\n" ));
   f.print(F( "if len(sys.argv) != 2 :\n" ));
