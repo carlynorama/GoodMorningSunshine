@@ -48,23 +48,23 @@ void MaxM_forSetUpLoop() {
   blinkm.stopScript();  // turn off startup script
   blinkm.setFadeSpeed(fadeTimeTicks);
   nightyNight();
-  Serial.println("done setting up");
+  Console.println("done setting up");
 }
 
 void initializeSunrise() {
-    currentColor = 0;
-    sunState = 1;
+  currentColor = 0;
+  sunState = 1;
 }
 
 void initializeSunset() {
-    currentColor = 0;
-    if (sunState > 0) {
-      sunState = 3;
-    }
+  currentColor = 0;
+  if (sunState > 0) {
+    sunState = 3;
+  }
 }
 
 void updateSun() {
-    if (sunState == 1) {
+  if (sunState == 1) {
     sunRise();
   } else if (sunState == 3) {
     sunSet();
@@ -90,8 +90,8 @@ void sunRise() {
       blinkm.fadeToRGB(r, g, b);
 
       currentColor = newColor + 1;
-      Serial.print("Changed to color: ");
-      Serial.println(newColor);
+      Console.print("Changed to color: ");
+      Console.println(newColor);
     }
   } else if (currentColor >= num_colors_sunrise) {
     sunState = 2;
@@ -114,8 +114,8 @@ void sunSet() {
       blinkm.fadeToRGB(r, g, b);
 
       currentColor = newColor + 1;
-      Serial.print("Changed to color: ");
-      Serial.println(newColor);
+      Console.print("Changed to color: ");
+      Console.println(newColor);
     }
   }  else if (currentColor >= num_colors_sunrise) {
     sunState = 0;
@@ -123,5 +123,5 @@ void sunSet() {
 }
 
 void nightyNight() {
-   blinkm.fadeToRGB(0, 0, 0);
+  blinkm.fadeToRGB(0, 0, 0);
 }
