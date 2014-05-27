@@ -1,23 +1,26 @@
+//For Communications
+#include <Console.h>
+
+const bool debugFlag = 1; 
+
 bool newReceivedMessageFlag = false;
 bool newSentMessageFlag = false;
 
-//INFORMATION ABOUT THE SUN
-int currentColor = 0;
-int newColor = 0;
-byte sunState = 0;
-// 0 = off
-// 1 = rising
-// 2 = risen
-// 3 = setting
-
-
 //FOR TESTING RECIEVED MESSAGES
-int receiveMessagePin = 10;
-int sendMessagePin = 11;
+int receiveMessagePin = 10;  //sunrise, orange wire
+int sendMessagePin = 11;  //sunset, yellow wire
 int sentStatusPin = 13;
 
 void setup() {
-  Serial.begin(9600);
+  // initialize serial communication:
+  Bridge.begin();
+  Console.begin(); 
+
+  while (!Console){
+    ; // wait for Console port to connect.
+  }
+  Console.println("You're connected to the Console!!!!");
+  
   MaxM_forSetUpLoop(); //in sun_handling tab
   pinMode(receiveMessagePin, INPUT);
   pinMode(sendMessagePin, INPUT);
@@ -29,26 +32,20 @@ void setup() {
 void loop() {
   // put your main code here, to run repeatedly:
   newReceivedMessageFlag = !digitalRead(receiveMessagePin);
-  newSentMessageFlag = !digitalRead(receiveMessagePin);
+  newSentMessageFlag = !digitalRead(sendMessagePin);
 
   if (newReceivedMessageFlag) {
-    currentColor = 0;
-    sunState = 1;
+    if (debugFlag) { Console.println("New Message Recived"); }
+    initializeSunrise();
   }
 
   if (newSentMessageFlag) {
-    currentColor = 0;
-    if (sunState > 0) {
-      sunState = 3;
-    }
+    if (debugFlag) { Console.println("New Message Sent"); }
+    initializeSunset();
+
   }
 
+ updateSun();
 
-  if (sunState == 1) {
-    sunRise();
-  } else if (sunState == 3) {
-    sunSet();
-  } else if (sunState == 0) {
-    nightyNight();
-  }
 }
+
