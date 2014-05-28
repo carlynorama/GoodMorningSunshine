@@ -1,7 +1,7 @@
 
 Geekout Talk Outline
 =============
-Overview: Anatomy of a networked project
+Overview: Anatomy of a Networked Project
 -----
 The system triangle:
 - Local Inputs
@@ -29,16 +29,6 @@ Example Project: "Good Morning Sunshine"
   - Goodnight Lamp - http://www.goodnightlamp.com/
   - Availabot - http://berglondon.com/projects/availabot/
 
-Building It
------------
-
-- Making enclosure
-
-- Wiring up LEDs & switches
-
-- Powering Arduino Yun
-
-
 Behavior & Design
 ---------------
 
@@ -49,6 +39,16 @@ Behavior & Design
 - Fading algorithm
 
 - Box design
+
+Building It
+-----------
+
+- Making enclosure
+
+- Wiring up LEDs & switches
+
+- Powering Arduino Yun
+
 
 
 Internet Connectivity
@@ -84,7 +84,9 @@ Hardware Discussion
   - built-in fading
  
 Wrap Up
---------
+-----
+
+Thank You Howard!
 
 
 
