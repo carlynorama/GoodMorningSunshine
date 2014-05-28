@@ -1,7 +1,18 @@
 
 Geekout Talk Outline
 =============
-
+Overview: Anatomy of a networked projects
+-----
+The system triangle:
+- Local Inputs
+- Internet compatible format for data (local data processing)
+- Web connection - outbound protocol
+- Remote Server for data storage 
+  - For some projects, done here (dataloggers)
+  - Others start here (twitter displays, etc.)
+- Web connection - inbound protocol
+- Ability to parse internet data
+- Local Outputs
 
 Demo
 -----
