@@ -12,7 +12,7 @@
 //
 
 const int who_am_i = 'A';  // or 'B'
-const int debug = 0; // set to 1 to get some Console debug output
+const int debug = 1; // set to 1 to get some Console debug output
 
 // CONFIGURATION: edit these four items for your set of TalkBack queues
 String talkbackIdA = "420";
@@ -37,7 +37,7 @@ String cmdSetB = "curl -k --data 'api_key=" +
     thingSpeakBaseUrl + 
     talkbackIdB + 
     "/commands.json'";
-// Get Cmds ahve form:
+// Get Cmds have form:
 // curl 'https://api.thingspeak.com/talkbacks/420/commands/execute.json?api_key=XDRCZ0LNWXFSJVIW'
 String cmdGetA = "curl -k '" + thingSpeakBaseUrl + 
     talkbackIdA + 
@@ -51,8 +51,113 @@ String cmdGetB = "curl -k '" + thingSpeakBaseUrl +
     "'";
 
 
-//
+Process checkProcess;
+void setupMessageCheck()
+{
+  String cmd;
+  if( who_am_i=='A' ) {
+    cmd = cmdGetA;
+  }
+  else if( who_am_i=='B' ) {
+    cmd = cmdGetB;
+  }
+
+  // write a little shell script daemon to fetch our stuff
+  // write to RAM so we don't wear out flash
+  File f = FileSystem.open( "/tmp/goodmorningcheck.sh", FILE_WRITE); 
+  f.print(F( "#!/bin/sh \n" ));
+  f.print(F( "while [ 1 ] ; do : \n"));
+  f.print(F( "  "));  
+  f.print( cmd );
+  f.print(F( " > /tmp/goodmorningcheck.out \n"));
+  f.print(F( "  sleep 5 \n"));
+  f.print(F( "done \n"));
+  f.print(F( "\n" ));
+  f.close();
+ 
+  // make executable 
+  Process chmod; 
+  chmod.runShellCommand("chmod +x /tmp/goodmorningcheck.sh");
+
+  // this seems to hang Yun on re-upload
+  //checkProcess.runShellCommandAsynchronously("/tmp/goodmorningcheck.sh");
+  
+  checkProcess.runShellCommand("/tmp/goodmorningcheck.sh &");
+
+}
+
+uint32_t lastMessageCheckTime;
 boolean checkForMessage()
+{
+  if (millis() - lastMessageCheckTime > 2000 ) {
+    lastMessageCheckTime = millis();
+    return checkForMessageFile();
+  }
+  return false;
+}
+
+//
+boolean checkForMessageFile()
+{
+  File f = FileSystem.open("/tmp/goodmorningcheck.out");
+  String str = f.readString();
+
+  if(debug) Console.println("checkForMessageFile: "+str);
+
+  // if empty set, got good response, but no results
+  if( str.indexOf("{}") != -1 ) { // empty set
+    return false;
+  }
+  // if result has json result set keys, likely a good message
+  if( str.indexOf("id") != -1 && str.indexOf("command_string") != -1){ 
+    return true;
+  }
+  return false;
+}
+
+
+boolean checkForMessageAsync()
+{
+  if( !checkProcess.running() ) {
+    
+    if( checkProcess.available() > 0 ) {
+      
+      String str; 
+      while( checkProcess.available() >0 ) { 
+        str += checkProcess.readString(); 
+      }
+      if(debug) Console.println("str="+str);
+
+      // if empty set, got good response, but no results
+      if( str.indexOf("{}") != -1 ) { // empty set
+        return false;
+      }
+      // if result has json result set keys, likely a good message
+      if( str.indexOf("id") != -1 && str.indexOf("command_string") != -1){ 
+        return true;
+      }
+
+    }
+
+    // restart
+    String cmd;
+    if( who_am_i=='A' ) {
+      cmd = cmdGetA;
+    }
+    else if( who_am_i=='B' ) {
+      cmd = cmdGetB;
+    }
+    if(debug) Console.println("checkForMessageAsync: cmd=\n  "+cmd);
+      
+    checkProcess.runShellCommandAsynchronously( cmd );
+  }
+  
+  return false;
+}
+
+
+//
+boolean checkForMessageSync()
 {
   String cmd;
   if( who_am_i=='A' ) {

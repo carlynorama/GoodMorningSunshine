@@ -30,23 +30,22 @@ void setup() {
   
   Bridge.begin();
   Console.begin(); 
-  while (!Console){
-    ; // wait for Console port to connect.
-  }
+  //while (!Console); // wait for Console port to connect. (halts sketch)
+  delay(2500);  // do this instead
   Console.println("You're connected to the Console!!!!");
   
   //INPUT AND OUTPUT
   //Inputs:
   //set button parameters
-  sendButton.setDebounceDelay(50);
+  // (debounce set to zero to deal with long delay in checkForMessage())
+  sendButton.setDebounceDelay(0);
   
   //Outputs:
-  MaxM_forSetUpLoop(); //in sun_handling tab
+  blinkm_setup(); //in sun_handling tab
   pinMode(sentStatusLED, OUTPUT);
   
   //INTERNET & THINGSPEAK
-  sendMessage();  // just to start off the conversation
-
+  //sendMessage();  // just to start off the conversation
 
 }
 
@@ -65,6 +64,7 @@ void loop() {
   sendButton.listen();  
   if (sendButton.onPress()){
     newSentMessageFlag = true;
+    Console.println("press");
   }
   
   //STEP 2: DO SOMETHING ABOUT IT
@@ -85,10 +85,11 @@ void loop() {
 
   }
 
- //STEP 3: UPDATE LOCAL DISPLAY
- updateSun();
- updateStatusLED();
-
+  //STEP 3: UPDATE LOCAL DISPLAY
+  updateSun();
+  updateStatusLED();
+  
+  Console.println("loop");
 }
 
 

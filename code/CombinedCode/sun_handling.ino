@@ -1,7 +1,7 @@
 #include "BlinkM.h"
 #include "Wire.h"
 
-const bool debug_sh = 0; // am I debugging this section of code?
+const bool debug_sh = 1; // am I debugging this section of code?
 
 int unsigned long previousColorChangeTime = 0;
 
@@ -17,8 +17,8 @@ byte sunState = 0;
 int blinkm_addr = 0;  // 0 = broadcast, talk to all blinkms
 BlinkM blinkm = BlinkM(blinkm_addr);
 
-const int unsigned long sunrise_change_time = 60000;
-const int unsigned long sunset_change_time = 60000;
+const int unsigned long sunrise_change_time = 10000;
+const int unsigned long sunset_change_time  = 10000;
 int fadeTimeTicks = 1;  // 1 is slow 255 is fast
 
 
@@ -46,7 +46,7 @@ const int unsigned long sunset_change_time_each =  sunset_change_time / num_colo
 
 
 
-void MaxM_forSetUpLoop() {
+void blinkm_setup() {
   blinkm.powerUp();
   blinkm.begin();
   blinkm.stopScript();  // turn off startup script
