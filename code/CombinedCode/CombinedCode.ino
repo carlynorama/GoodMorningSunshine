@@ -57,15 +57,18 @@ void setup() {
 
 void loop() {
   //STEP 1: LISTEN TO THE WORLD
-  //new messages?
+  
+  //new messages on server?
   newReceivedMessageFlag = checkForMessage();
-
+  
+  //new button press?
   sendButton.listen();  
   if (sendButton.onPress()){
     newSentMessageFlag = true;
   }
   
   //STEP 2: DO SOMETHING ABOUT IT
+  
   if (newReceivedMessageFlag) {
     if (debug_main) { Console.println("New Message Recived"); }
     initializeSunrise();
@@ -82,7 +85,7 @@ void loop() {
 
   }
 
- //STEP 3: UPDATE LOCAL OUTPUTS
+ //STEP 3: UPDATE LOCAL DISPLAY
  updateSun();
  updateStatusLED();
 
