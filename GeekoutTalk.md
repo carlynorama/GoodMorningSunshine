@@ -1,7 +1,7 @@
 
 Geekout Talk Outline
 =============
-Overview: Anatomy of a networked projects
+Overview: Anatomy of a networked project
 -----
 The system triangle:
 - Local Inputs
@@ -14,7 +14,7 @@ The system triangle:
 - Ability to parse internet data
 - Local Outputs
 
-Demo
+Example Project: "Good Morning Sunshine"
 -----
 
 - What it is
@@ -73,6 +73,11 @@ Hardware Discussion
   - Linux!
   - curl!
   - Python!
+  
+- Yun Alternatives, what would be different
+  - Arduino with a WiFi Shield
+  - Galileo
+  - Raspberry Pi
 
 - BlinkM
   - high-level I2C commanding
