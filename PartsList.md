@@ -12,6 +12,11 @@ To complete one device:
 - 1x - 1m RGB LED strip - https://www.sparkfun.com/products/12021
 - 1x - 12V DC power adapter - https://www.sparkfun.com/products/11296
 
+To build the enclosure:
+- 2x - Ikea Ribba picture frame
+- 2x - Jewelers hinges
+ 
+
 Build two devices for a complete system.
 
 You will also need to get a (free) ThingSpeak account at http://thingspeak.com/
