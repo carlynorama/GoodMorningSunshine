@@ -12,6 +12,7 @@
 //
 
 const int who_am_i = 'A';  // or 'B'
+const int debug = 0; // set to 1 to get some Console debug output
 
 // CONFIGURATION: edit these four items for your set of TalkBack queues
 String talkbackIdA = "420";
@@ -22,17 +23,32 @@ String apiKeyB = "C0WRVX6WHAD92ZU1";
 
 String thingSpeakBaseUrl = "https://api.thingspeak.com/talkbacks/";
 
-String cmdSetA = "curl --data 'api_key=" +
-  apiKeyA + "&command_string=hello' '" +
-  thingSpeakBaseUrl + talkbackIdA + "/commands/execute.json'";
-String cmdSetB = "curl --data 'api_key=" +
-  apiKeyB + "&command_string=hello' '" +
-  thingSpeakBaseUrl + talkbackIdB + "/commands/execute.json'";
-
-String cmdGetA = "curl " + thingSpeakBaseUrl + talkbackIdA + 
-  "/commands.json?api_key="+apiKeyA;
-String cmdGetB = "curl " + thingSpeakBaseUrl + talkbackIdB + 
-  "/commands.json?api_key="+apiKeyB;
+// Set Cmds have form: 
+// curl --data 'api_key=XDRCZ0LNWXFSJVIW&command_string=hello' 'https://api.thingspeak.com/talkbacks/420/commands.json'
+String cmdSetA = "curl -k --data 'api_key=" +
+    apiKeyA + 
+    "&command_string=hello' '" +
+    thingSpeakBaseUrl + 
+    talkbackIdA + 
+    "/commands.json'";
+String cmdSetB = "curl -k --data 'api_key=" +
+    apiKeyB + 
+    "&command_string=hello' '" +
+    thingSpeakBaseUrl + 
+    talkbackIdB + 
+    "/commands.json'";
+// Get Cmds ahve form:
+// curl 'https://api.thingspeak.com/talkbacks/420/commands/execute.json?api_key=XDRCZ0LNWXFSJVIW'
+String cmdGetA = "curl -k '" + thingSpeakBaseUrl + 
+    talkbackIdA + 
+    "/commands/execute.json?api_key="+ 
+    apiKeyA + 
+    "'";
+String cmdGetB = "curl -k '" + thingSpeakBaseUrl + 
+    talkbackIdB + 
+    "/commands/execute.json?api_key=" + 
+    apiKeyB + 
+    "'";
 
 
 //
@@ -43,19 +59,28 @@ boolean checkForMessage()
     cmd = cmdGetA;
   }
   else if( who_am_i=='B' ) {
-    cmd = cmdGetA;
+    cmd = cmdGetB;
   }
+  if(debug) Console.println("checkForMessage: cmd=\n  "+cmd);
   Process p;
-  p.begin( cmd );
-  p.run(); 
+  p.runShellCommand( cmd );
+  while(p.running()); // do nothing until process finishes
+  
   String str; 
-  while( p.available() > 0 ) { 
+  while( p.available() >0 ) { 
      str += p.readString(); 
-  } 
-  if( str.indexOf("id") != 0 ) { 
-    return true;
   }
-  return false;  
+  if(debug)Console.println("str="+str);
+
+  // if empty set, got good response, but no results
+  if( str.indexOf("{}") != -1 ) { // empty set
+      return false;
+  }
+  // if result has json result set keys, likely a good message
+  if( str.indexOf("id") != -1 && str.indexOf("command_string") != -1 ) { 
+      return true;
+  }
+  return false; // by default, no message
 }
 
 //
@@ -68,7 +93,7 @@ void sendMessage()
   else if( who_am_i=='B' ) {
     cmd = cmdSetB;
   }
-  Console.println("sendMessage: cmd="+cmd);
+  if(debug) Console.println("sendMessage: cmd=\n  "+cmd);
   Process p;  
   p.runShellCommand( cmd );
 }
