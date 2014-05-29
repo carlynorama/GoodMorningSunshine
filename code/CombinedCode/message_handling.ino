@@ -123,7 +123,7 @@ void putMessage() {
     cmd = cmdSetB; // if A, send to B
   }
   else if ( who_am_i == 'B' ) {
-    cmd = cmdSetB;
+    cmd = cmdSetA;
   }
   if (debug_mh) { 
       Console.print("sendMessage: cmd=\n  ");
