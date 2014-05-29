@@ -31,6 +31,7 @@ void setup() {
   Bridge.begin();
   Console.begin(); 
   //while (!Console); // wait for Console port to connect. halts sketch
+  delay(2500);
   Console.println(F("You're connected to the Console!!!!"));
   
   //INPUT AND OUTPUT
@@ -68,14 +69,14 @@ void loop() {
   //STEP 2: DO SOMETHING ABOUT IT
   
   if (newReceivedMessageFlag) {
-    if (debug_main) { Console.println(F("New Message Received")); }
+    if (debug_main) { Console.println(F("msg recvd")); }
     initializeSunrise();
     newReceivedMessageFlag = false;
   }
 
   if (newSentMessageFlag) {
     sendMessage();
-    if (debug_main) { Console.println(F("New Message Sent")); }
+    if (debug_main) { Console.println(F("msg sent")); }
     initializeSunset();
     newSentMessageFlag = false;
 

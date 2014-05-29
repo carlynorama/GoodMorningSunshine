@@ -72,7 +72,10 @@ boolean checkForMessage()
   else if ( who_am_i == 'B' ) {
     cmd = cmdGetB;
   }
-  if (debug_mh) Console.println("checkForMessage: cmd=\n  " + cmd);
+  if (debug_mh) { 
+      Console.print(F("checkForMessage: cmd=\n  "));
+      Console.println(cmd);
+  }
   Process p;
   p.runShellCommand( cmd );
   while (p.running()); // do nothing until process finishes
@@ -120,7 +123,10 @@ void putMessage() {
   else if ( who_am_i == 'B' ) {
     cmd = cmdSetB;
   }
-  if (debug_mh) Console.println("sendMessage: cmd=\n  " + cmd);
+  if (debug_mh) { 
+      Console.print("sendMessage: cmd=\n  ");
+      Console.println(cmd);
+  }
   Process p;
   p.runShellCommand( cmd );
 }
