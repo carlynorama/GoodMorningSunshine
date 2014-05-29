@@ -80,21 +80,15 @@ void setupMessageCheck()
   chmod.runShellCommand("chmod +x /tmp/goodmorningcheck.sh");
 
   // this seems to hang Yun on re-upload
-  //checkProcess.runShellCommandAsynchronously("/tmp/goodmorningcheck.sh");
+  checkProcess.runShellCommandAsynchronously("/tmp/goodmorningcheck.sh");
   
-  checkProcess.runShellCommand("/tmp/goodmorningcheck.sh &");
+  // this doesn't work, disown not available
+  //checkProcess.runShellCommand("/tmp/goodmorningcheck.sh &; disown %1");
 
 }
 
-uint32_t lastMessageCheckTime;
-boolean checkForMessage()
-{
-  if (millis() - lastMessageCheckTime > 2000 ) {
-    lastMessageCheckTime = millis();
-    return checkForMessageFile();
-  }
-  return false;
-}
+//decl
+boolean checkForMessage();
 
 //
 boolean checkForMessageFile()
@@ -204,3 +198,14 @@ void sendMessage()
 }
 
 
+uint32_t lastMessageCheckTime;
+boolean checkForMessage()
+{
+  if (millis() - lastMessageCheckTime > 2000 ) {
+    lastMessageCheckTime = millis();
+    return checkForMessageFile();
+    return checkForMessageASync();
+    //return checkForMessageSync();
+  }
+  return false;
+}
