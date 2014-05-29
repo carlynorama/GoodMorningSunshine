@@ -13,7 +13,7 @@ const bool debug_main = 1;
 //-----------------------------------------------------------  MESSAGES
 bool newReceivedMessageFlag = false;
 bool newSentMessageFlag = false;
-byte outMessageStatusState = 0;
+
 // 0 = no pending message, 1 = trying to reach internet,  2 = found internet
 
 //------------------------------------------------------------------ IO
@@ -30,22 +30,23 @@ void setup() {
   
   Bridge.begin();
   Console.begin(); 
-  //while (!Console); // wait for Console port to connect. (halts sketch)
-  delay(2500);  // do this instead
+  while (!Console){
+    ; // wait for Console port to connect.
+  }
   Console.println("You're connected to the Console!!!!");
   
   //INPUT AND OUTPUT
   //Inputs:
   //set button parameters
-  // (debounce set to zero to deal with long delay in checkForMessage())
-  sendButton.setDebounceDelay(0);
+  sendButton.setDebounceDelay(50);
   
   //Outputs:
-  blinkm_setup(); //in sun_handling tab
+  MaxM_forSetUpLoop(); //in sun_handling tab
   pinMode(sentStatusLED, OUTPUT);
   
   //INTERNET & THINGSPEAK
   //sendMessage();  // just to start off the conversation
+
 
 }
 
@@ -64,7 +65,6 @@ void loop() {
   sendButton.listen();  
   if (sendButton.onPress()){
     newSentMessageFlag = true;
-    Console.println("press");
   }
   
   //STEP 2: DO SOMETHING ABOUT IT
@@ -78,18 +78,15 @@ void loop() {
   if (newSentMessageFlag) {
     sendMessage();
     if (debug_main) { Console.println("New Message Sent"); }
-    outMessageStatusState = 1;
-    setStatusLED(outMessageStatusState);
     initializeSunset();
     newSentMessageFlag = false;
 
   }
 
-  //STEP 3: UPDATE LOCAL DISPLAY
-  updateSun();
-  updateStatusLED();
-  
-  Console.println("loop");
+ //STEP 3: UPDATE LOCAL DISPLAY
+ updateSun();
+ updateStatusLED();
+
 }
 
 
