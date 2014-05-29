@@ -84,7 +84,9 @@ boolean checkForMessage()
   while ( p.available() > 0 ) {
     str += p.readString();
   }
-  if (debug_mh)Console.println("str=" + str);
+  if (debug_mh) {
+      Console.print(F("str=")); Console.println(str);
+  }
 
   // if empty set, got good response, but no results
   if ( str.indexOf("{}") != -1 ) { // empty set
