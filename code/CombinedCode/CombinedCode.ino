@@ -30,10 +30,8 @@ void setup() {
   
   Bridge.begin();
   Console.begin(); 
-  while (!Console){
-    ; // wait for Console port to connect.
-  }
-  Console.println("You're connected to the Console!!!!");
+  //while (!Console); // wait for Console port to connect. halts sketch
+  Console.println(F("You're connected to the Console!!!!"));
   
   //INPUT AND OUTPUT
   //Inputs:
@@ -41,7 +39,7 @@ void setup() {
   sendButton.setDebounceDelay(50);
   
   //Outputs:
-  MaxM_forSetUpLoop(); //in sun_handling tab
+  blinkm_setup(); //in sun_handling tab
   pinMode(sentStatusLED, OUTPUT);
   
   //INTERNET & THINGSPEAK
@@ -70,14 +68,14 @@ void loop() {
   //STEP 2: DO SOMETHING ABOUT IT
   
   if (newReceivedMessageFlag) {
-    if (debug_main) { Console.println("New Message Recived"); }
+    if (debug_main) { Console.println(F("New Message Received")); }
     initializeSunrise();
     newReceivedMessageFlag = false;
   }
 
   if (newSentMessageFlag) {
     sendMessage();
-    if (debug_main) { Console.println("New Message Sent"); }
+    if (debug_main) { Console.println(F("New Message Sent")); }
     initializeSunset();
     newSentMessageFlag = false;
 
