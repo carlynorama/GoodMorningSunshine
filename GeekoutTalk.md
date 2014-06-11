@@ -66,6 +66,10 @@ Internet Connectivity
   - pros
   - cons
 
+- Temboo
+  - What it is good for
+  - Why we didn't use it
+
 Hardware Discussion
 -----------------
 
